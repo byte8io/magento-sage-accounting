@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Byte8 Ltd. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="byte8_sage_accounting" translate="label" type="text"
+                 sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+            <class>separator-top</class>
+            <label>Sage Accounting</label>
+            <tab>byte8</tab>
+            <resource>Byte8_SageAccounting::config</resource>
+
+            <group id="pairing" translate="label" type="text"
+                   sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Pair with ledger.byte8.io</label>
+                <comment><![CDATA[
+                    Setup runs at <a href="https://ledger.byte8.io/dashboard" target="_blank" rel="noopener">ledger.byte8.io</a>.
+                    Generate a pairing code below, copy the Magento Base URL, then paste both into ledger's "Connect your Magento store" form.
+                    The code is single-use and expires after 30 minutes.
+                ]]></comment>
+                <field id="magento_base_url" translate="label" type="label"
+                       sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Magento Base URL</label>
+                    <frontend_model>Byte8\SageAccounting\Block\Adminhtml\System\Config\MagentoBaseUrl</frontend_model>
+                </field>
+                <field id="pairing_code" translate="label" type="label"
+                       sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Pairing Code</label>
+                    <frontend_model>Byte8\SageAccounting\Block\Adminhtml\System\Config\PairingCodeField</frontend_model>
+                </field>
+                <field id="go_to_ledger" translate="label" type="label"
+                       sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Complete setup</label>
+                    <frontend_model>Byte8\SageAccounting\Block\Adminhtml\System\Config\GoToLedger</frontend_model>
+                </field>
+            </group>
+
+            <group id="connection" translate="label" type="text"
+                   sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Connection</label>
+                <field id="status" translate="label" type="label"
+                       sortOrder="10" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Connection Status</label>
+                    <frontend_model>Byte8\SageAccounting\Block\Adminhtml\System\Config\ConnectionStatus</frontend_model>
+                </field>
+                <field id="tenant_id" translate="label comment" type="label"
+                       sortOrder="20" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Tenant ID</label>
+                    <config_path>byte8/sage_accounting/tenant_id</config_path>
+                    <comment>Populated when ledger completes the paired setup. Read-only.</comment>
+                </field>
+                <field id="api_key" translate="label comment" type="obscure"
+                       sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Byte8 API Key</label>
+                    <config_path>byte8/sage_accounting/api_key</config_path>
+                    <backend_model>Magento\Config\Model\Config\Backend\Encrypted</backend_model>
+                    <comment>HMAC secret for the JWT channel, delivered by ledger's paired-setup call. Read-only.</comment>
+                </field>
+                <field id="disconnect_button" translate="label" type="button"
+                       sortOrder="40" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Disconnect</label>
+                    <frontend_model>Byte8\SageAccounting\Block\Adminhtml\System\Config\DisconnectButton</frontend_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

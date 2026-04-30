@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Byte8 Ltd. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Byte8\SageAccounting\Api\SageConfigInterface"
+                type="Byte8\SageAccounting\Model\SageConfig"/>
+    <preference for="Byte8\SageAccounting\Api\SetupPairInterface"
+                type="Byte8\SageAccounting\Model\Setup\Pair"/>
+
+    <!-- CLI -->
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="byte8_sage_invoice_sync"
+                      xsi:type="object">Byte8\SageAccounting\Console\Command\SyncInvoiceCommand</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <!--
+        PR7. LEFT-JOIN the byte8_entity_sync_state mirror onto the
+        Invoices + Credit Memos grids so the "Sage Status" column has
+        a value to render.
+
+        Why no Sales → Orders chip in v1: ledger syncs invoices, not
+        orders. An order has zero or more invoices, each with its own
+        sync state — putting one chip on the order row would either
+        require a synthetic rollup (which obscures multi-invoice
+        partial-sync cases) or pick an arbitrary invoice. The order
+        detail page surfaces this via the per-entity admin info block
+        instead.
+
+        Invoice grid: Magento's `Order\Invoice\Grid\Collection` is a
+        virtualType (a bare `SearchResult` subclass with no concrete
+        PHP file), so plugins on it can't generate an Interceptor.
+        We replace the virtualType's underlying type with our own
+        concrete subclass (`InvoiceGridCollection`) that bakes the
+        JOIN into `_initSelect()`.
+
+        Credit Memo grid: `Order\Creditmemo\Grid\Collection` IS a real
+        concrete class. We initially tried a `beforeGetSelect` plugin
+        but `AbstractCollection::setMainTable` calls `getSelect()`
+        from inside the constructor *before* `_initSelect` populates
+        `$this->_select` — the plugin crashed with
+        `Call to a member function joinLeft() on null`. Subclass +
+        `_initSelect` override sidesteps the timing issue. The
+        subclass is wired as the data source via the
+        `CollectionFactory` `collections` array override below.
+    -->
+    <virtualType name="Magento\Sales\Model\ResourceModel\Order\Invoice\Grid\Collection"
+                 type="Byte8\SageAccounting\Model\ResourceModel\Sales\InvoiceGridCollection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">sales_invoice_grid</argument>
+            <argument name="resourceModel" xsi:type="string">Magento\Sales\Model\ResourceModel\Order\Invoice</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="sales_order_creditmemo_grid_data_source"
+                      xsi:type="string">Byte8\SageAccounting\Model\ResourceModel\Sales\CreditmemoGridCollection</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

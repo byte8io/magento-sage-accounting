@@ -1,0 +1,49 @@
+<?php
+/**
+ * Copyright © Byte8 Ltd. All rights reserved.
+ * See LICENSE.txt for license details.
+ *
+ * @var \Byte8\SageAccounting\Block\Adminhtml\System\Config\ConnectionStatus $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+declare(strict_types=1);
+
+$status = $block->getStatus();
+$colors = [
+    'connected'     => '#00873d',
+    'pending'       => '#b36500',
+    'unknown'       => '#757575',
+    'disconnected'  => '#b30000',
+    'token_revoked' => '#b30000',
+];
+$color = $colors[$status['state']] ?? '#757575';
+$deadLetterCount = $block->getDeadLetterCount();
+?>
+<span style="display:inline-flex;align-items:center;gap:8px;">
+    <span aria-hidden="true"
+          style="display:inline-block;width:10px;height:10px;border-radius:50%;background:<?= $escaper->escapeHtmlAttr($color) ?>;"></span>
+    <strong><?= $escaper->escapeHtml($status['label']) ?></strong>
+</span>
+<?php if ($status['detail'] !== ''): ?>
+    <p class="note" style="margin-top:6px;"><?= $escaper->escapeHtml($status['detail']) ?></p>
+<?php endif; ?>
+<?php if ($deadLetterCount > 0): ?>
+    <div style="margin-top:10px;padding:10px 12px;border-left:4px solid #b36500;background:#fff8e7;">
+        <strong style="color:#b36500;">
+            ⚠ <?= (int) $deadLetterCount ?>
+            <?= $deadLetterCount === 1 ? 'event' : 'events' ?> need attention
+        </strong>
+        <p class="note" style="margin:4px 0 0;">
+            <?= $escaper->escapeHtml(
+                'Ledger rejected one or more events with a deterministic error '
+                . '(typically a mapping or reference-data issue — e.g. missing Sage tax code). '
+                . 'These events are NOT being retried automatically; they must be inspected and '
+                . 'requeued once fixed.'
+            ) ?>
+        </p>
+        <p class="note" style="margin:6px 0 0;font-family:monospace;">
+            bin/magento byte8:sage:outbox:inspect<br/>
+            bin/magento byte8:sage:outbox:requeue --id=&lt;entity_id&gt;
+        </p>
+    </div>
+<?php endif; ?>

@@ -1,0 +1,43 @@
+<?php
+/**
+ * Copyright © Byte8 Ltd. All rights reserved.
+ * See LICENSE.txt for license details.
+ *
+ * @var \Byte8\SageAccounting\Block\Adminhtml\System\Config\MagentoBaseUrl $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+declare(strict_types=1);
+
+$url = $block->getMagentoBaseUrl();
+$inputId = 'byte8_sage_magento_base_url';
+?>
+<div style="display:flex;gap:8px;align-items:center;max-width:560px;">
+    <input id="<?= $escaper->escapeHtmlAttr($inputId) ?>"
+           type="text"
+           readonly
+           value="<?= $escaper->escapeHtmlAttr($url) ?>"
+           style="flex:1;font-family:monospace;"/>
+    <button type="button"
+            class="action-default"
+            data-clipboard-target="<?= $escaper->escapeHtmlAttr('#' . $inputId) ?>">
+        <?= /* @noEscape */ __('Copy') ?>
+    </button>
+</div>
+<p class="note"><?= /* @noEscape */ __('Paste this into the Connect Store form at ledger.byte8.io.') ?></p>
+<script>
+    require(['jquery'], function ($) {
+        $('[data-clipboard-target="#<?= /* @noEscape */ $inputId ?>"]').on('click', function () {
+            var $tgt = $('#<?= /* @noEscape */ $inputId ?>');
+            $tgt.trigger('select');
+            try {
+                document.execCommand('copy');
+                $(this).text(<?= /* @noEscape */ json_encode((string) __('Copied')) ?>);
+                setTimeout(function () {
+                    $('[data-clipboard-target="#<?= /* @noEscape */ $inputId ?>"]').text(<?= /* @noEscape */ json_encode((string) __('Copy')) ?>);
+                }, 1500);
+            } catch (e) {
+                /* no-op — older browsers without execCommand */
+            }
+        });
+    });
+</script>

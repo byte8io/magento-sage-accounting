@@ -1,0 +1,21 @@
+<?php
+/**
+ * Copyright © Byte8 Ltd. All rights reserved.
+ * See LICENSE.txt for license details.
+ *
+ * @var \Byte8\SageAccounting\Block\Adminhtml\System\Config\GoToLedger $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+declare(strict_types=1);
+?>
+<?= $block->getButtonHtml() ?>
+<script>
+    require(['jquery'], function ($) {
+        $('#byte8_sage_go_to_ledger_button').on('click', function (e) {
+            e.preventDefault();
+            window.open(<?= /* @noEscape */ json_encode($block->getLedgerDashboardUrl()) ?>, '_blank', 'noopener,noreferrer');
+            return false;
+        });
+    });
+</script>
+<p class="note"><?= /* @noEscape */ __('Opens in a new tab. If you are not signed in to Byte8 yet, you will be routed through sign-up first.') ?></p>

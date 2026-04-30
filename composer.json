@@ -1,0 +1,20 @@
+{
+    "name": "byte8/magento-sage-accounting",
+    "description": "Thin Magento 2 client for the Byte8 Sage Accounting SaaS connector.",
+    "require": {
+        "php": "~8.1.0||~8.2.0||~8.3.0||~8.4.0",
+        "byte8/module-core": "*",
+        "byte8/module-client": "*"
+    },
+    "type": "magento2-module",
+    "license": "EULA",
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Byte8\\SageAccounting\\": ""
+        }
+    },
+    "version": "1.0.1"
+}

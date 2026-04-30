@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Byte8 Ltd. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<!--
+    PR7. Loads the "Sage Status" chip stylesheet on every adminhtml page.
+    The chip itself is rendered by `Ui\Component\Listing\Column\SyncStatus`
+    (grid columns) and `Block\Adminhtml\SyncStatus\EntityInfo`
+    (entity detail pages).
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Byte8_SageAccounting::css/sync-status.css"/>
+    </head>
+</page>

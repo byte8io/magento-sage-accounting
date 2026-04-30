@@ -1,0 +1,81 @@
+<?php
+/**
+ * Copyright © Byte8 Ltd. All rights reserved.
+ * See LICENSE.txt for license details.
+ *
+ * @var \Byte8\SageAccounting\Block\Adminhtml\System\Config\PairingCodeField $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+declare(strict_types=1);
+
+$flash = $block->consumeFlashCode();
+$pending = $block->hasPendingCode();
+$inputId = 'byte8_sage_pairing_code_reveal';
+?>
+<?php if ($flash !== null): ?>
+    <div style="display:flex;gap:8px;align-items:center;max-width:560px;">
+        <input id="<?= $escaper->escapeHtmlAttr($inputId) ?>"
+               type="text"
+               readonly
+               value="<?= $escaper->escapeHtmlAttr($flash) ?>"
+               style="flex:1;font-family:monospace;"/>
+        <button type="button"
+                class="action-default"
+                data-clipboard-target="#<?= $escaper->escapeHtmlAttr($inputId) ?>">
+            <?= /* @noEscape */ __('Copy') ?>
+        </button>
+    </div>
+    <p class="note" style="color:#b36500;">
+        <strong><?= /* @noEscape */ __('Copy this code now.') ?></strong>
+        <?= /* @noEscape */ __('It is shown once and expires in %1 minutes. If you navigate away or refresh, you will need to regenerate.', $block->getPendingCodeTtlMinutes()) ?>
+    </p>
+    <script>
+        require(['jquery'], function ($) {
+            $('[data-clipboard-target="#<?= /* @noEscape */ $inputId ?>"]').on('click', function () {
+                $('#<?= /* @noEscape */ $inputId ?>').trigger('select');
+                try { document.execCommand('copy'); } catch (e) { /* no-op */ }
+            });
+        });
+    </script>
+<?php elseif ($pending): ?>
+    <p class="note">
+        <?= /* @noEscape */ __(
+            'A pairing code was generated %1 minute(s) ago (expires after %2).'
+            . ' The plaintext is no longer available — regenerate to reveal a new one.',
+            $block->getPendingCodeAgeMinutes(),
+            $block->getPendingCodeTtlMinutes()
+        ) ?>
+    </p>
+<?php else: ?>
+    <p class="note"><?= /* @noEscape */ __('Generate a pairing code to reveal for ledger.byte8.io. Single-use, 30 minute TTL.') ?></p>
+<?php endif; ?>
+
+<?= $block->getGenerateButtonHtml($pending) ?>
+
+<script>
+    require(['jquery', 'Magento_Ui/js/modal/confirm', 'mage/translate'], function ($, confirmation) {
+        $('#byte8_sage_generate_pairing_code_button').on('click', function (e) {
+            e.preventDefault();
+            var run = function () {
+                var form = $('<form>', {
+                    method: 'post',
+                    action: <?= /* @noEscape */ json_encode($block->getGenerateUrl()) ?>
+                }).append(
+                    $('<input>', {type: 'hidden', name: 'form_key', value: <?= /* @noEscape */ json_encode($block->getFormKey()) ?>})
+                );
+                $('body').append(form);
+                form.submit();
+            };
+            <?php if ($pending): ?>
+                confirmation({
+                    title: $.mage.__('Regenerate pairing code?'),
+                    content: $.mage.__('The previous code will stop working immediately.'),
+                    actions: {confirm: run}
+                });
+            <?php else: ?>
+                run();
+            <?php endif; ?>
+            return false;
+        });
+    });
+</script>

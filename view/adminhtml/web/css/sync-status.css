@@ -1,0 +1,28 @@
+/*
+ * PR7. "Sage Status" chip styling for the Magento admin grids + entity
+ * detail blocks. Loaded via default.xml on adminhtml pages.
+ *
+ * Colour palette matches Magento admin's existing severity vocabulary:
+ *   synced  → green   (Magento "available" / "enabled" green)
+ *   pending → grey    (waiting / no commitment)
+ *   skipped → amber   (intentional, but operator might want to know why)
+ *   failed  → red     (operator action required)
+ *   none    → muted grey (no sync attempted; pre-install / out-of-scope)
+ */
+.byte8-sync-chip {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 16px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    cursor: default;
+}
+
+.byte8-sync-chip--synced  { background: #e3f5e1; color: #1f7a1f; }
+.byte8-sync-chip--pending { background: #ececec; color: #555;    }
+.byte8-sync-chip--skipped { background: #fff3cd; color: #8a6d00; }
+.byte8-sync-chip--failed  { background: #fce4e4; color: #b3261e; }
+.byte8-sync-chip--none    { background: transparent; color: #999; font-weight: 400; }

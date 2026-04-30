@@ -1,0 +1,22 @@
+<?php
+/**
+ * Copyright © Byte8 Ltd. All rights reserved.
+ * See LICENSE.txt for license details.
+ *
+ * @var \Byte8\SageAccounting\Block\Adminhtml\Sync\Iframe $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+declare(strict_types=1);
+
+$embedUrl = $block->getEmbedUrl();
+?>
+<?php if ($embedUrl === ''): ?>
+    <div class="message message-warning"><?= /* @noEscape */ __('Connect to Sage before opening Sage Sync.') ?></div>
+<?php else: ?>
+    <iframe src="<?= $escaper->escapeUrl($embedUrl) ?>"
+            style="width:100%;min-height:calc(100vh - 220px);border:0;"
+            title="<?= $escaper->escapeHtmlAttr(__('Byte8 Sage Sync')) ?>"
+            referrerpolicy="no-referrer"
+            loading="eager">
+    </iframe>
+<?php endif; ?>

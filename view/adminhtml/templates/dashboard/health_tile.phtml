@@ -1,0 +1,55 @@
+<?php
+/**
+ * Copyright © Byte8 Ltd. All rights reserved.
+ * See LICENSE.txt for license details.
+ *
+ * @var \Byte8\SageAccounting\Block\Adminhtml\Dashboard\HealthTile $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+declare(strict_types=1);
+
+$tile = $block->getTileData();
+$palette = [
+    'connected'    => ['bg' => '#e6f4ea', 'fg' => '#00873d', 'dot' => '#00873d'],
+    'warning'      => ['bg' => '#fff4e0', 'fg' => '#b36500', 'dot' => '#f4a100'],
+    'error'        => ['bg' => '#fde8e8', 'fg' => '#b30000', 'dot' => '#d73a49'],
+    'unknown'      => ['bg' => '#f1f1f1', 'fg' => '#5a5a5a', 'dot' => '#757575'],
+    'disconnected' => ['bg' => '#f1f1f1', 'fg' => '#5a5a5a', 'dot' => '#b30000'],
+];
+$c = $palette[$tile['state']] ?? $palette['unknown'];
+?>
+<a href="<?= $escaper->escapeUrl($tile['click_url']) ?>"
+   style="display:block;text-decoration:none;color:inherit;margin:0 0 20px;">
+    <div style="background:<?= $escaper->escapeHtmlAttr($c['bg']) ?>;
+                border-left:4px solid <?= $escaper->escapeHtmlAttr($c['dot']) ?>;
+                padding:16px 20px;
+                border-radius:4px;
+                display:flex;
+                flex-wrap:wrap;
+                gap:24px;
+                align-items:center;">
+        <div style="flex:1 1 240px;min-width:240px;">
+            <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:<?= $escaper->escapeHtmlAttr($c['fg']) ?>;margin-bottom:4px;">
+                <?= /* @noEscape */ __('Byte8 Sage Sync') ?>
+            </div>
+            <div style="font-size:18px;font-weight:600;color:<?= $escaper->escapeHtmlAttr($c['fg']) ?>;">
+                <span aria-hidden="true" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:<?= $escaper->escapeHtmlAttr($c['dot']) ?>;margin-right:8px;vertical-align:middle;"></span>
+                <?= $escaper->escapeHtml($tile['headline']) ?>
+            </div>
+        </div>
+        <div style="flex:0 1 auto;min-width:140px;">
+            <div style="font-size:11px;text-transform:uppercase;color:#5a5a5a;letter-spacing:0.06em;"><?= /* @noEscape */ __('Last sync') ?></div>
+            <div style="font-size:15px;color:#333;"><?= $escaper->escapeHtml($block->formatRelative($tile['last_run'])) ?></div>
+        </div>
+        <div style="flex:0 1 auto;min-width:110px;">
+            <div style="font-size:11px;text-transform:uppercase;color:#5a5a5a;letter-spacing:0.06em;"><?= /* @noEscape */ __('Pending') ?></div>
+            <div style="font-size:15px;color:#333;"><?= $tile['pending'] === null ? '—' : (int) $tile['pending'] ?></div>
+        </div>
+        <div style="flex:0 1 auto;min-width:130px;">
+            <div style="font-size:11px;text-transform:uppercase;color:#5a5a5a;letter-spacing:0.06em;"><?= /* @noEscape */ __('Errors 24h') ?></div>
+            <div style="font-size:15px;color:<?= $tile['failed_24h'] !== null && $tile['failed_24h'] > 0 ? '#b30000' : '#333' ?>;">
+                <?= $tile['failed_24h'] === null ? '—' : (int) $tile['failed_24h'] ?>
+            </div>
+        </div>
+    </div>
+</a>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Byte8 Ltd. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <!--
+        Paired-setup endpoint. Marked `anonymous` — we authenticate via
+        the `pairing_code` request-body parameter matched against the
+        single-use hash stored by Magento's "Generate Pairing Code"
+        admin button. See Byte8\SageAccounting\Model\Setup\Pair and
+        SECURITY.md §"Pairing flow".
+
+        Do NOT switch this to bearer — paired setup is where ledger
+        learns the master api_key, so there is no key to authenticate
+        with yet.
+    -->
+    <route method="POST" url="/V1/byte8/setup/pair">
+        <service class="Byte8\SageAccounting\Api\SetupPairInterface" method="pair"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+</routes>

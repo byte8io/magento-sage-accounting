@@ -1,0 +1,67 @@
+<?php
+/**
+ * Copyright © Byte8 Ltd. All rights reserved.
+ * See LICENSE.txt for license details.
+ *
+ * @var \Byte8\SageAccounting\Block\Adminhtml\SyncStatus\EntityInfo $block
+ * @var \Magento\Framework\Escaper $escaper
+ *
+ * PR7. Sage Accounting info block on Sales → Order / Invoice / Credit
+ * Memo detail pages. Renders the chip + Sage reference + last-sync
+ * timestamp + skip-reason / error-code context.
+ */
+$state = $block->getSyncState();
+?>
+<section class="admin__page-section byte8-sync-info">
+    <div class="admin__page-section-title">
+        <span class="title"><?= /* @noEscape */ __('Sage Accounting') ?></span>
+    </div>
+    <div class="admin__page-section-content">
+        <table class="admin__table-secondary">
+            <tbody>
+            <tr>
+                <th><?= /* @noEscape */ __('Status') ?></th>
+                <td>
+                    <span class="<?= $escaper->escapeHtmlAttr(
+                        $block->getStatusCssClass($state ? $state->getSyncStatus() : null)
+                    ) ?>">
+                        <?= $escaper->escapeHtml(
+                            $block->getStatusLabel($state ? $state->getSyncStatus() : null)
+                        ) ?>
+                    </span>
+                </td>
+            </tr>
+            <?php if ($state && $state->getProviderReference()): ?>
+                <tr>
+                    <th><?= /* @noEscape */ __('Sage Reference') ?></th>
+                    <td><?= $escaper->escapeHtml($state->getProviderReference()) ?></td>
+                </tr>
+            <?php endif; ?>
+            <?php if ($state && $state->getProviderEntityId()): ?>
+                <tr>
+                    <th><?= /* @noEscape */ __('Sage Entity ID') ?></th>
+                    <td><code><?= $escaper->escapeHtml($state->getProviderEntityId()) ?></code></td>
+                </tr>
+            <?php endif; ?>
+            <?php if ($state && $state->getSkipReason()): ?>
+                <tr>
+                    <th><?= /* @noEscape */ __('Skip Reason') ?></th>
+                    <td><?= $escaper->escapeHtml($state->getSkipReason()) ?></td>
+                </tr>
+            <?php endif; ?>
+            <?php if ($state && $state->getErrorCode()): ?>
+                <tr>
+                    <th><?= /* @noEscape */ __('Error Code') ?></th>
+                    <td><?= $escaper->escapeHtml($state->getErrorCode()) ?></td>
+                </tr>
+            <?php endif; ?>
+            <?php if ($state && $state->getLastSyncAt()): ?>
+                <tr>
+                    <th><?= /* @noEscape */ __('Last Sync') ?></th>
+                    <td><?= $escaper->escapeHtml($state->getLastSyncAt()) ?> UTC</td>
+                </tr>
+            <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</section>

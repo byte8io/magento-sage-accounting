@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Byte8 Ltd. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <columns name="sales_order_invoice_columns">
+        <column name="byte8_sync_status"
+                class="Byte8\SageAccounting\Ui\Component\Listing\Column\SyncStatus"
+                component="Magento_Ui/js/grid/columns/column"
+                sortOrder="135">
+            <settings>
+                <!--
+                    bodyTmpl=ui/grid/cells/html disables the default
+                    HTML-escape on the cell so the chip span renders
+                    as styled markup rather than literal text. PR7.
+                -->
+                <bodyTmpl>ui/grid/cells/html</bodyTmpl>
+                <filter>select</filter>
+                <options class="Byte8\SageAccounting\Ui\Component\Listing\Column\SyncStatus\Options"/>
+                <dataType>select</dataType>
+                <label translate="true">Sage Status</label>
+            </settings>
+        </column>
+    </columns>
+</listing>

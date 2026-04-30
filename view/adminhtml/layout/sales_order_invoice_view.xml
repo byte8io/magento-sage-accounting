@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Byte8 Ltd. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<!--
+    PR7. Adds the "Sage Accounting" admin info block to the
+    Sales → Invoice detail page.
+
+    The block reads `byte8_entity_sync_state` for
+    (entity_type='invoice', magento_id={current_invoice}).
+    Inserted into the existing `order_info` reference container so it
+    sits beside Magento's "Invoice Information" panel (consistent with
+    how the rest of Magento positions admin metadata blocks).
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="order_additional_info">
+            <block class="Byte8\SageAccounting\Block\Adminhtml\SyncStatus\EntityInfo"
+                   name="byte8.sageaccounting.invoice.sync_status"
+                   template="Byte8_SageAccounting::sync_status/entity_info.phtml">
+                <arguments>
+                    <argument name="entity_type" xsi:type="string">invoice</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

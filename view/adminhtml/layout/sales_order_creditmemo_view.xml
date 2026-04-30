@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Byte8 Ltd. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="order_additional_info">
+            <block class="Byte8\SageAccounting\Block\Adminhtml\SyncStatus\EntityInfo"
+                   name="byte8.sageaccounting.creditmemo.sync_status"
+                   template="Byte8_SageAccounting::sync_status/entity_info.phtml">
+                <arguments>
+                    <argument name="entity_type" xsi:type="string">creditmemo</argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

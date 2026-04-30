@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Byte8 Ltd. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Byte8_SageAccounting::sync"
+             title="Sage Sync"
+             translate="title"
+             module="Byte8_SageAccounting"
+             sortOrder="20"
+             parent="Byte8_Core::byte8"
+             action="byte8sageaccounting/sync/index"
+             resource="Byte8_SageAccounting::sync"/>
+        <add id="Byte8_SageAccounting::config_sage_accounting"
+             title="Sage Accounting"
+             translate="title"
+             module="Byte8_SageAccounting"
+             sortOrder="20"
+             parent="Byte8_Core::config"
+             action="adminhtml/system_config/edit/section/byte8_sage_accounting/"
+             resource="Byte8_SageAccounting::config"/>
+    </menu>
+</config>

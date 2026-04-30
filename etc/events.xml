@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Byte8 Ltd. All rights reserved.
+ * See LICENSE.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <!--
+        Two observers on `sales_order_invoice_save_after`, each guarded
+        by distinct transition logic:
+
+        - InvoiceCreatedObserver fires once, on the first save of the
+          invoice (entity_id edge). Emits `invoice.created` regardless
+          of paid status — B2B / net-terms / COD flows need the
+          invoice visible in Sage AR the moment it's raised, not only
+          once money lands.
+
+        - InvoicePaidObserver fires once, on the state transition to
+          PAID (orig_state ≠ PAID && state == PAID). Emits
+          `invoice.paid` which ledger turns into a provider payment
+          attached to the already-existing Sage invoice.
+
+        Declaration order matters only when both fire on the same save
+        (capture-online): invoice.created MUST reach ledger's Redis
+        queue first so the Sage invoice exists by the time
+        AttachInvoicePayment runs. `sales_order_invoice_save_after`
+        observers dispatch in XML declaration order, so keep
+        InvoiceCreatedObserver above InvoicePaidObserver.
+    -->
+    <event name="sales_order_invoice_save_after">
+        <observer name="byte8_sage_invoice_created"
+                  instance="Byte8\SageAccounting\Observer\InvoiceCreatedObserver"/>
+        <observer name="byte8_sage_invoice_paid"
+                  instance="Byte8\SageAccounting\Observer\InvoicePaidObserver"/>
+    </event>
+    <event name="customer_save_after">
+        <observer name="byte8_sage_customer_upserted"
+                  instance="Byte8\SageAccounting\Observer\CustomerUpsertedObserver"/>
+    </event>
+    <event name="sales_order_creditmemo_save_after">
+        <observer name="byte8_sage_creditmemo_created"
+                  instance="Byte8\SageAccounting\Observer\CreditMemoCreatedObserver"/>
+    </event>
+    <!--
+        ProductUpsertedObserver fires on BOTH catalog edits AND stock
+        movements. One event (product.upserted) covers both surfaces;
+        ledger refetches the canonical product (which carries
+        stock_qty + manage_stock alongside catalog metadata) and the
+        Sage provider decides whether to upsert the catalog row,
+        post a /stock_movements reconciliation, or both. Reusing one
+        event means ledger's idempotency-key dedup collapses
+        same-millisecond catalog+stock saves into one Sage round-trip.
+        Stock-only sync requires sync_policy.sync_stock=true on the
+        ledger side; the Magento observer always fires.
+    -->
+    <event name="catalog_product_save_after">
+        <observer name="byte8_sage_product_upserted"
+                  instance="Byte8\SageAccounting\Observer\ProductUpsertedObserver"/>
+    </event>
+    <event name="cataloginventory_stock_item_save_after">
+        <observer name="byte8_sage_stock_item_upserted"
+                  instance="Byte8\SageAccounting\Observer\ProductUpsertedObserver"/>
+    </event>
+</config>
