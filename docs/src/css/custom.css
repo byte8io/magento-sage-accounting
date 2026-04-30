@@ -1,0 +1,359 @@
+/**
+ * Byte8 Sage Accounting — docs theme
+ *
+ * Matches byte8.io marketing dark aesthetic:
+ *   - Deep near-black background (#0a0b0e)
+ *   - Soft rounded surface panels with hairline borders
+ *   - Sage green accent (#00D639) — sits in the "accounting / ledger" product
+ *     family, distinct from Stock Radar (amber / signal) and SEO Suite
+ *     (emerald / discovery). Matches the Sage Business Cloud brand and the
+ *     /products/sage-accounting marketing page exactly.
+ *   - Subtle gradients on hover, like the marketing product cards
+ */
+
+/* ============================================================
+   Light mode (kept usable but dark is the default + canonical)
+   ============================================================ */
+:root {
+  --ifm-color-primary: #00a82d;            /* Sage green, slightly darker for AA contrast on white */
+  --ifm-color-primary-dark: #008c25;
+  --ifm-color-primary-darker: #00721e;
+  --ifm-color-primary-darkest: #004d14;
+  --ifm-color-primary-light: #00c233;
+  --ifm-color-primary-lighter: #00d639;
+  --ifm-color-primary-lightest: #4cfa73;
+
+  --ifm-background-color: #ffffff;
+  --ifm-background-surface-color: #f8fafc;
+
+  --ifm-font-family-base: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --ifm-font-family-monospace: 'JetBrains Mono', 'SF Mono', Monaco,
+    'Cascadia Code', Consolas, monospace;
+  --ifm-font-size-base: 16px;
+  --ifm-line-height-base: 1.65;
+  --ifm-heading-font-weight: 600;
+
+  --ifm-code-font-size: 88%;
+  --ifm-code-border-radius: 6px;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 214, 57, 0.12);
+
+  --ifm-global-radius: 12px;
+  --ifm-button-border-radius: 999px;
+}
+
+/* ============================================================
+   Dark mode — the primary, canonical theme
+   ============================================================ */
+[data-theme='dark'] {
+  /* Background hierarchy — matches the byte8.io marketing site */
+  --ifm-background-color: #0a0b0e;
+  --ifm-background-surface-color: #111317;
+  --ifm-color-emphasis-100: #16191f;
+  --ifm-color-emphasis-200: #1d2128;
+  --ifm-color-emphasis-300: #2a2f37;
+  --ifm-color-emphasis-1000: #f5f7fa;
+
+  /* Primary accent — Sage green palette */
+  --ifm-color-primary: #00d639;            /* The /products/sage-accounting marketing colour */
+  --ifm-color-primary-dark: #00b832;
+  --ifm-color-primary-darker: #00a82d;
+  --ifm-color-primary-darkest: #008c25;
+  --ifm-color-primary-light: #1fe352;
+  --ifm-color-primary-lighter: #4cfa73;
+  --ifm-color-primary-lightest: #a8ffbe;
+
+  /* Code blocks */
+  --ifm-code-background: #16191f;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 214, 57, 0.14);
+
+  /* Navbar */
+  --ifm-navbar-background-color: rgba(10, 11, 14, 0.85);
+  --ifm-navbar-shadow: none;
+
+  /* Cards / surfaces */
+  --byte8-card-bg: #111317;
+  --byte8-card-border: rgba(255, 255, 255, 0.06);
+  --byte8-card-border-hover: rgba(0, 214, 57, 0.35);
+}
+
+/* ============================================================
+   Global typography
+   ============================================================ */
+html, body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: var(--ifm-heading-font-weight);
+  letter-spacing: -0.02em;
+}
+
+[data-theme='dark'] body {
+  background-color: var(--ifm-background-color);
+  background-image:
+    radial-gradient(circle at 10% -10%, rgba(0, 214, 57, 0.06), transparent 40%),
+    radial-gradient(circle at 90% 10%, rgba(99, 102, 241, 0.04), transparent 35%);
+  background-attachment: fixed;
+}
+
+/* ============================================================
+   Navbar — matches byte8.io marketing site
+   ============================================================ */
+.navbar {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--byte8-card-border, rgba(0, 0, 0, 0.05));
+}
+
+.navbar__title {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+[data-theme='dark'] .navbar {
+  background-color: rgba(10, 11, 14, 0.85);
+}
+
+/* CTA button on the navbar — pill, white background like marketing */
+.navbar-cta-button {
+  background: #ffffff;
+  color: #0a0b0e !important;
+  padding: 0.4rem 1rem !important;
+  border-radius: 999px;
+  font-weight: 600;
+  margin-left: 0.5rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.navbar-cta-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.15);
+}
+
+/* GitHub icon */
+.header-github-link::before {
+  content: '';
+  width: 22px;
+  height: 22px;
+  display: flex;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23000' d='M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z'/%3E%3C/svg%3E")
+    no-repeat;
+}
+
+[data-theme='dark'] .header-github-link::before {
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23fff' d='M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z'/%3E%3C/svg%3E")
+    no-repeat;
+}
+
+.header-github-link:hover {
+  opacity: 0.7;
+}
+
+/* ============================================================
+   Sidebar — quieter than default
+   ============================================================ */
+[data-theme='dark'] .menu {
+  background-color: transparent;
+}
+
+.menu__link {
+  border-radius: 8px;
+  font-size: 0.92rem;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.menu__link--active {
+  font-weight: 600;
+}
+
+[data-theme='dark'] .menu__link--active:not(.menu__link--sublist) {
+  background: rgba(0, 214, 57, 0.1);
+  color: var(--ifm-color-primary-light);
+}
+
+.menu__list-item-collapsible:hover,
+.menu__link:hover {
+  background: var(--ifm-color-emphasis-100);
+}
+
+/* ============================================================
+   Cards (used on homepage and category landing pages)
+   Mimics the byte8.io product cards
+   ============================================================ */
+.byte8-card {
+  background: var(--byte8-card-bg, #111317);
+  border: 1px solid var(--byte8-card-border, rgba(0, 0, 0, 0.06));
+  border-radius: 18px;
+  padding: 1.75rem;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.byte8-card:hover {
+  border-color: var(--byte8-card-border-hover, var(--ifm-color-primary));
+  transform: translateY(-2px);
+}
+
+.byte8-card__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(0, 214, 57, 0.14);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  color: var(--ifm-color-primary-light);
+}
+
+.byte8-card__title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--ifm-color-primary-light);
+}
+
+.byte8-card__body {
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+/* ============================================================
+   Code blocks
+   ============================================================ */
+pre code {
+  border-radius: var(--ifm-code-border-radius);
+  font-size: 0.875rem;
+}
+
+[data-theme='dark'] .theme-code-block {
+  background-color: #0d0f13 !important;
+  border: 1px solid var(--byte8-card-border);
+}
+
+/* Inline code */
+code {
+  border: 1px solid var(--ifm-color-emphasis-200);
+}
+
+/* ============================================================
+   Admonitions — softer, marketing-page styled
+   ============================================================ */
+.admonition {
+  border-radius: var(--ifm-global-radius);
+  border-width: 1px;
+  border-style: solid;
+}
+
+[data-theme='dark'] .admonition {
+  background: var(--byte8-card-bg);
+  border-color: var(--byte8-card-border);
+}
+
+[data-theme='dark'] .admonition--note .admonition-icon svg {
+  fill: var(--ifm-color-primary-light);
+}
+
+/* ============================================================
+   Buttons — pill-style matching marketing
+   ============================================================ */
+.button {
+  font-weight: 600;
+  border-radius: 999px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0, 214, 57, 0.22);
+}
+
+.button--primary {
+  background: var(--ifm-color-primary);
+  border-color: var(--ifm-color-primary);
+  color: #ffffff;
+}
+
+[data-theme='dark'] .button--primary {
+  background: var(--ifm-color-primary);
+  color: #001405;
+}
+
+.button--secondary {
+  background: transparent;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  color: var(--ifm-color-emphasis-1000);
+}
+
+[data-theme='dark'] .button--secondary {
+  background: transparent;
+  color: #f5f7fa;
+}
+
+/* ============================================================
+   Footer
+   ============================================================ */
+.footer {
+  background: #050609;
+  border-top: 1px solid var(--byte8-card-border);
+  padding: 3rem 0 2rem;
+}
+
+.footer__title {
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ifm-color-emphasis-600);
+}
+
+.footer__link-item {
+  font-size: 0.92rem;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.footer__link-item:hover {
+  color: var(--ifm-color-primary-light);
+  text-decoration: none;
+}
+
+.footer__copyright {
+  margin-top: 2rem;
+  font-size: 0.82rem;
+  color: var(--ifm-color-emphasis-500);
+}
+
+/* ============================================================
+   TOC (table of contents on the right)
+   ============================================================ */
+.table-of-contents {
+  font-size: 0.85rem;
+}
+
+.table-of-contents__link--active {
+  color: var(--ifm-color-primary-light);
+  font-weight: 600;
+}
+
+/* ============================================================
+   Sage Status chip — matches the Magento admin grid styling
+   so doc screenshots feel native.
+   ============================================================ */
+.sage-chip {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.sage-chip--synced  { background: rgba(0, 214, 57, 0.18); color: #4cfa73; }
+.sage-chip--pending { background: rgba(255, 255, 255, 0.08); color: #d6d6d6; }
+.sage-chip--skipped { background: rgba(245, 158, 11, 0.18); color: #fbbf24; }
+.sage-chip--failed  { background: rgba(239, 68, 68, 0.18); color: #fca5a5; }
+.sage-chip--none    { background: transparent; color: #888; font-weight: 400; }
