@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to `byte8/module-sage-accounting` are documented here.
+All notable changes to `byte8/magento-sage-accounting` are documented here.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 the project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
@@ -13,22 +13,12 @@ slice from the byte8.io repo when a backend change is involved.
 
 _No unreleased changes yet._
 
-## [1.0.1] — 2026-04-29
+## [1.0.0] — 2026-04-30
 
-### Added
-
-- `README.md` — connector overview, Connect-flow walkthrough, sync
-  matrix, architecture diagram, install + console-command reference.
-- `LICENSE.txt` — MIT, matching the sibling `module-core` /
-  `module-profile` / `module-utils` modules.
-- `CHANGELOG.md` (this file) — version-to-version diff for merchants
-  pulling updates via Cargoman / Composer.
-
-## [1.0.0] — 2026-04-29
-
-First production release. Three coherent slices land together (PR1–PR2
-pairing-code Connect, PR2–PR6 outbound sync observers, PR7 Magento-side
-sync-status mirror UI). Pair-installs with `byte8/module-client` and
+First production release of the Byte8 Sage Accounting connector for
+Magento 2. Three coherent slices land together (PR1–PR2 pairing-code
+Connect, PR2–PR6 outbound sync observers, PR7 Magento-side sync-status
+mirror UI). Pair-installs with `byte8/module-client` and
 `byte8/module-core`; the Sage API itself is reached from the Byte8
 Ledger SaaS — Magento never talks to `api.accounting.sage.com` directly.
 
@@ -44,6 +34,8 @@ Ledger SaaS — Magento never talks to `api.accounting.sage.com` directly.
   handshake and persist the per-tenant `api_key`.
 - Connection status block: pre-Connect, paired, and dead-letter banner
   states.
+- Sync iframe surface (Block + Controller) for embedding the ledger
+  dashboard directly inside the Magento admin.
 
 #### Outbound sync observers (PR2 / PR3 / PR4 / PR5 / PR6)
 
@@ -101,12 +93,21 @@ Ledger SaaS — Magento never talks to `api.accounting.sage.com` directly.
   via `default.xml`; `bodyTmpl=ui/grid/cells/html` on the grid column
   so the styled span renders as markup instead of escaped text.
 
+#### Documentation
+
+- `README.md` — connector overview, Connect-flow walkthrough, sync
+  matrix, architecture diagram, install + console-command reference.
+- `LICENSE.txt` — MIT, matching the sibling `module-core` /
+  `module-profile` / `module-utils` modules.
+- `CHANGELOG.md` (this file) — version-to-version diff for merchants
+  pulling updates via Cargoman / Composer.
+
 ### Notes for operators
 
-- `bin/magento setup:upgrade` is required after install — the `byte8/module-client`
-  dependency adds the `byte8_entity_sync_state` table that this module
-  reads from in its grid + detail UI.
-- Pre-PR7 invoices show the `—` chip (no mirror row exists). Either
+- `bin/magento setup:upgrade` is required after install — the
+  `byte8/module-client` dependency adds the `byte8_entity_sync_state`
+  table that this module reads from in its grid + detail UI.
+- Pre-install invoices show the `—` chip (no mirror row exists). Either
   retry from the ledger dashboard (re-fires the callback) or backfill
   via SQL — see `MAGENTO_THIN_MODULE.md` "Backfill" section.
 
@@ -135,6 +136,5 @@ Ledger SaaS — Magento never talks to `api.accounting.sage.com` directly.
   invoice; accountants reconcile manually in Sage when the cheque /
   bank transfer lands.
 
-[Unreleased]: ../../compare/v1.0.1...HEAD
-[1.0.1]: ../../compare/v1.0.0...v1.0.1
+[Unreleased]: ../../compare/v1.0.0...HEAD
 [1.0.0]: ../../releases/tag/v1.0.0
