@@ -7,7 +7,7 @@
         "byte8/module-client": "*"
     },
     "type": "magento2-module",
-    "license": "EULA",
+    "license": "proprietary",
     "autoload": {
         "files": [
             "registration.php"
