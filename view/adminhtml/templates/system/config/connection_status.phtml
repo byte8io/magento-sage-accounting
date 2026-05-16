@@ -42,8 +42,8 @@ $deadLetterCount = $block->getDeadLetterCount();
             ) ?>
         </p>
         <p class="note" style="margin:6px 0 0;font-family:monospace;">
-            bin/magento byte8:sage:outbox:inspect<br/>
-            bin/magento byte8:sage:outbox:requeue --id=&lt;entity_id&gt;
+            bin/magento byte8:client:outbox:inspect<br/>
+            bin/magento byte8:client:outbox:requeue --id=&lt;entity_id&gt;
         </p>
     </div>
 <?php endif; ?>

@@ -1,14 +1,14 @@
 ---
 sidebar_position: 3
 title: Dead-letter banner
-description: The admin config page banner that surfaces failed deliveries — and how to triage them via the byte8:sage:outbox CLIs.
+description: The admin config page banner that surfaces failed deliveries — and how to triage them via the byte8:client:outbox CLIs.
 ---
 
 # Dead-letter banner
 
 When the outbox classifies a delivery failure as **deterministic** (a 4xx from the chassis, or 10 consecutive transient retries with no success), the row goes to `dead_lettered` status and a **banner appears on the Sage Accounting config page**:
 
-> ⚠ **3 dead-lettered events** — these failed permanently and won't retry. Use `bin/magento byte8:sage:outbox:inspect` to triage.
+> ⚠ **3 dead-lettered events** — these failed permanently and won't retry. Use `bin/magento byte8:client:outbox:inspect` to triage.
 
 The banner sits inside the **Connection Status** block at the top of **Stores → Configuration → Byte8 → Sage Accounting**.
 
@@ -30,7 +30,7 @@ The 24h silent-drop behaviour from earlier versions is gone — nothing is ever 
 ### List dead-lettered rows
 
 ```bash
-bin/magento byte8:sage:outbox:inspect
+bin/magento byte8:client:outbox:inspect
 ```
 
 Shows entity_id, event_name, idempotency_key, last_status_code, last_attempt_at, and the first 200 chars of `last_error`. Most operators run this from a support session.
@@ -38,7 +38,7 @@ Shows entity_id, event_name, idempotency_key, last_status_code, last_attempt_at,
 ### Re-queue after fixing the underlying cause
 
 ```bash
-bin/magento byte8:sage:outbox:requeue <entity_id>
+bin/magento byte8:client:outbox:requeue <entity_id>
 ```
 
 Flips the row back to `pending`, clears `next_attempt_at`, lets the cron pick it up on the next minute. **Do this only after fixing whatever caused the original failure** — re-queueing a row whose cause is unfixed just dead-letters it again.
@@ -52,7 +52,7 @@ Common fixes before re-queue:
 ### Cleanup old succeeded rows
 
 ```bash
-bin/magento byte8:sage:outbox:cleanup --days=30
+bin/magento byte8:client:outbox:cleanup --days=30
 ```
 
 Purges `succeeded` outbox rows older than `--days` (default 30). Never touches `pending` or `dead_lettered`. The chassis already runs this daily via the `byte8_outbox_gc` cron — manual invocation is for ad-hoc cleanup.
@@ -78,8 +78,8 @@ curl -i https://ledger.byte8.io/v1/tile/health
 If the chassis is unreachable, the dead-letter pile won't help — fix connectivity first, then re-queue in batches:
 
 ```bash
-bin/magento byte8:sage:outbox:inspect | head -50          # see top-50 oldest
-bin/magento byte8:sage:outbox:requeue <id> ...            # re-queue them
+bin/magento byte8:client:outbox:inspect | head -50          # see top-50 oldest
+bin/magento byte8:client:outbox:requeue <id> ...            # re-queue them
 ```
 
 The cron drains 50 per minute by default, so even 1,000 dead-lettered events catch up within ~20 minutes once unblocked.

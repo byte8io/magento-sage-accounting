@@ -93,9 +93,9 @@ bin/magento byte8:sage:invoice:sync <invoice_id>
 Operator-driven sync trigger for a single invoice. Used during dev / triage when you want to bypass the cron drain. Production sync goes through the standard observer + cron path.
 
 ```bash
-bin/magento byte8:sage:outbox:inspect
-bin/magento byte8:sage:outbox:requeue <entity_id>
-bin/magento byte8:sage:outbox:cleanup [--days=30]
+bin/magento byte8:client:outbox:inspect
+bin/magento byte8:client:outbox:requeue <entity_id>
+bin/magento byte8:client:outbox:cleanup [--days=30]
 ```
 
 Outbox triage commands (live in `byte8/module-client`). See `module-client/SECURITY.md` for the full operator runbook.

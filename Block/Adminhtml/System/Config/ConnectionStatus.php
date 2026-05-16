@@ -50,7 +50,7 @@ class ConnectionStatus extends Field
      * non-zero count means at least one payload was rejected by ledger
      * with a deterministic 4xx (most likely a missing Sage reference
      * or bad mapping). The merchant must fix the underlying issue and
-     * run `bin/magento byte8:sage:outbox:requeue` to retry — the cron
+     * run `bin/magento byte8:client:outbox:requeue` to retry — the cron
      * never revives dead-letters on its own.
      */
     public function getDeadLetterCount(): int

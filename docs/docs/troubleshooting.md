@@ -30,7 +30,7 @@ If using ECE or a managed Magento host, check their cron configuration page.
 
 **Diagnose:**
 ```bash
-bin/magento byte8:sage:outbox:inspect
+bin/magento byte8:client:outbox:inspect
 ```
 
 Read the `last_error` column for the cause. Common categories:
