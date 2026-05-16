@@ -12,11 +12,10 @@ const config: Config = {
     v4: true,
   },
 
-  url: 'https://magento-sage-accounting.byte8.dev',
-  baseUrl: '/',
-
-  organizationName: 'byte8io',
-  projectName: 'magento-sage-accounting',
+  // Production URL — served under unified docs domain (Cloudflare Pages + Worker router).
+  // See apps/docs-router in the byte8.io monorepo + docs/DOCS_SITE_MIGRATION.md.
+  url: 'https://docs.byte8.io',
+  baseUrl: '/sage/',
   trailingSlash: false,
 
   onBrokenLinks: 'warn',

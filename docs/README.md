@@ -2,18 +2,18 @@
 
 Docusaurus 3 site for [`byte8/magento-sage-accounting`](../README.md).
 
-Hosted at **https://magento-sage-accounting.byte8.dev**.
+Hosted at **https://docs.byte8.io/sage/** — served under the unified Byte8 docs domain via Cloudflare Pages and a path-based Worker router (see `apps/docs-router/` in the byte8.io monorepo).
 
 ## Local development
 
 ```bash
 cd docs
-nvm use            # picks up Node 20+
+nvm use            # picks up Node 22 from .nvmrc
 pnpm install
 pnpm start
 ```
 
-Opens at `http://localhost:3000/`.
+Opens at `http://localhost:3000/sage/` (the `baseUrl` prefix is honoured in dev too).
 
 ## Production build
 
@@ -21,8 +21,13 @@ Opens at `http://localhost:3000/`.
 pnpm build
 ```
 
-Output goes to `build/`. Deploy that directory to any static host (the
-repo's GitHub Pages workflow handles `magento-sage-accounting.byte8.dev`).
+Output goes to `build/`. Deployed via **Cloudflare Pages**:
+
+- **Project:** `docs-magento-sage-accounting`
+- **Build command:** `pnpm install --frozen-lockfile && pnpm build`
+- **Build output:** `build`
+- **Root directory:** `docs` (since this Docusaurus project sits in a subfolder of the module repo)
+- **Production URL:** `https://docs.byte8.io/sage/`
 
 ## Editing
 
