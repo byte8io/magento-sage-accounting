@@ -9,6 +9,25 @@ Version coordinates match `composer.json` — bump on every release that
 touches merchants, link the relevant Sage Accounting `__docs/PROGRESS.md`
 slice from the byte8.io repo when a backend change is involved.
 
+## [1.1.0](https://github.com/byte8io/magento-sage-accounting/compare/v1.0.2...v1.1.0) (2026-05-17)
+
+
+### Features
+
+* **nav:** add "← All docs" link to navbar pointing to docs hub ([f9bb091](https://github.com/byte8io/magento-sage-accounting/commit/f9bb0919a4294f5f55e77e6555474e915603a92c))
+* **search:** wire Algolia DocSearch — cross-product search across docs.byte8.io ([5fd4462](https://github.com/byte8io/magento-sage-accounting/commit/5fd4462fd6c387386fa203d2148d9fc43aef4357))
+
+
+### Bug Fixes
+
+* **search:** force full nav for cross-site search results ([88da7d9](https://github.com/byte8io/magento-sage-accounting/commit/88da7d90a67bf8213e493dbe5d407959536a59ae))
+* **search:** keep DocSearch links internal-looking for SEO + clientModule for same-tab nav ([c8a2a7d](https://github.com/byte8io/magento-sage-accounting/commit/c8a2a7d0e02900cf99552054b30fbcdf5a5ea6fa))
+
+
+### Documentation
+
+* migrate to docs.byte8.io/sage unified domain ([9e60768](https://github.com/byte8io/magento-sage-accounting/commit/9e607685fda281e9e37362fa0575943824ee122f))
+
 ## [Unreleased]
 
 _No unreleased changes yet._
