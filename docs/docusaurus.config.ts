@@ -158,6 +158,12 @@ const config: Config = {
       indexName: 'Byte8 Documentation Site',
       contextualSearch: false,
       searchPagePath: 'search',
+      // Force full-page navigation for any docs.byte8.io URL. Search hits span
+      // different Pages projects (each product is its own Docusaurus site,
+      // routed by the docs-router Worker). Without this the DocSearch modal
+      // does React Router SPA navigation, which 404s because the destination
+      // route doesn't exist in the current site's bundle.
+      externalUrlRegex: 'docs\\.byte8\\.io',
     },
   } satisfies Preset.ThemeConfig,
 };
