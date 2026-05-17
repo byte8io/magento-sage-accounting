@@ -83,6 +83,13 @@ const config: Config = {
       },
       items: [
         {
+          href: 'https://docs.byte8.io/',
+          label: '← All docs',
+          position: 'left',
+          target: '_self',
+          rel: null,
+        },
+        {
           type: 'docSidebar',
           sidebarId: 'docsSidebar',
           position: 'left',
