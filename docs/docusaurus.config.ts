@@ -60,6 +60,11 @@ const config: Config = {
     ],
   ],
 
+  // Capture-phase click interceptor that forces same-tab navigation for DocSearch
+  // hits pointing at sibling docs.byte8.io sites. See the module for the SEO/UX
+  // rationale (replaces externalUrlRegex).
+  clientModules: ['./src/clientModules/fix-docsearch-nav.ts'],
+
   themeConfig: {
     image: 'img/social-card.png',
     colorMode: {
@@ -158,12 +163,9 @@ const config: Config = {
       indexName: 'Byte8 Documentation Site',
       contextualSearch: false,
       searchPagePath: 'search',
-      // Force full-page navigation for any docs.byte8.io URL. Search hits span
-      // different Pages projects (each product is its own Docusaurus site,
-      // routed by the docs-router Worker). Without this the DocSearch modal
-      // does React Router SPA navigation, which 404s because the destination
-      // route doesn't exist in the current site's bundle.
-      externalUrlRegex: 'docs\\.byte8\\.io',
+      // Cross-site navigation handled by src/clientModules/fix-docsearch-nav.ts —
+      // intentionally NOT using externalUrlRegex (which would make Docusaurus's
+      // <Link> emit absolute URLs with target="_blank", hurting internal-link SEO).
     },
   } satisfies Preset.ThemeConfig,
 };
