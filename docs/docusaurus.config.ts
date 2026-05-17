@@ -149,6 +149,16 @@ const config: Config = {
       darkTheme: prismThemes.vsDark,
       additionalLanguages: ['php', 'bash', 'json', 'xml-doc', 'tsx', 'sql', 'graphql'],
     },
+    // Algolia DocSearch — cross-product search across every docs.byte8.io/* site.
+    // Public Search-Only credentials (designed to ship in client JS, restricted to
+    // read-only queries on this index). Safe to commit.
+    algolia: {
+      appId: 'VWO679B1LI',
+      apiKey: 'b3f3b5b76b0d684e50796c9e045b41e5',
+      indexName: 'Byte8 Documentation Site',
+      contextualSearch: false,
+      searchPagePath: 'search',
+    },
   } satisfies Preset.ThemeConfig,
 };
 
